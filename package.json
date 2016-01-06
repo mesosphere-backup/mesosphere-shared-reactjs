@@ -1,0 +1,30 @@
+{
+  "name": "mesosphere-shared-reactjs",
+  "version": "0.0.1",
+  "description": "Shared code from mesosphere web projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mesosphere/mesosphere-shared-reactjs.git"
+  },
+  "author": "Mesosphere Web Team",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/mesosphere/mesosphere-shared-reactjs/issues"
+  },
+  "homepage": "https://github.com/mesosphere/mesosphere-shared-reactjs#readme",
+  "devDependencies": {
+    "jest-cli": "^0.4.15",
+    "react": "^0.14.5",
+    "reactjs-mixin": "0.0.2"
+  },
+  "jest": {
+    "unmockedModulePathPatterns": [
+      "react",
+      "reactjs-mixin"
+    ]
+  }
+}
