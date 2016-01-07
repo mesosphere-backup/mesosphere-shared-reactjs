@@ -43,7 +43,7 @@ var StoreMixin = {
           }
 
           storesListeners[storeName] = Util.extend(
-            ListenersDescription[storeName], listener
+            {}, ListenersDescription[storeName], listener
           );
         }
       });
