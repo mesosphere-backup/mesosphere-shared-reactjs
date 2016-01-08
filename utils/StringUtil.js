@@ -1,6 +1,6 @@
 var StringUtil = {
   capitalize: function (string) {
-    if (typeof string !== "string") {
+    if (typeof string !== 'string') {
       return null;
     }
 

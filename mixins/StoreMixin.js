@@ -1,13 +1,13 @@
-var StringUtil = require("../utils/StringUtil");
-var Util = require("../utils/Util");
+var StringUtil = require('../utils/StringUtil');
+var Util = require('../utils/Util');
 
-var LISTENER_SUFFIX = "ListenerFn";
+var LISTENER_SUFFIX = 'ListenerFn';
 var ListenersDescription = {
   // Example store
   // user: {
   //   store: UserStoreHere,
   //   events: {
-  //     success: "USER_STORE_SUCCESS"
+  //     success: 'USER_STORE_SUCCESS'
   //   },
   //   unmountWhen: function () {
   //     return true;
@@ -25,7 +25,7 @@ var StoreMixin = {
       // Merges options for each store listener with
       // the ListenersDescription definition above
       this.store_listeners.forEach(function (listener) {
-        if (typeof listener === "string") {
+        if (typeof listener === 'string') {
           // Use all defaults
           storesListeners[listener] = Util.clone(ListenersDescription[listener]);
         } else {
@@ -33,7 +33,7 @@ var StoreMixin = {
           var events = listener.events;
 
           // Populate events by key. For example, a component
-          // may only want to listen for "success" events
+          // may only want to listen for 'success' events
           if (events) {
             listener.events = {};
             events.forEach(function (event) {
@@ -150,7 +150,7 @@ var StoreMixin = {
     var storeName = StringUtil.capitalize(storeID);
     var eventName = StringUtil.capitalize(event);
 
-    return "on" + storeName + "Store" + eventName;
+    return 'on' + storeName + 'Store' + eventName;
   }
 };
 
