@@ -1,3 +1,4 @@
+var GetSetMixin = require("./mixins/GetSetMixin");
 var StoreMixin = require("./mixins/StoreMixin");
 var Store = require("./utils/Store");
 
