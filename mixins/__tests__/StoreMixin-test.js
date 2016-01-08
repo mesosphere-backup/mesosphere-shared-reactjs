@@ -9,8 +9,8 @@ var Store = require('../../utils/Store');
 var StoreMixin = require('../StoreMixin');
 var Util = require('../../utils/Util');
 
-var marathonSuccess = "MARATHON_SUCCESS";
-var marathonError = "MARATHON_ERROR";
+var marathonSuccess = 'MARATHON_SUCCESS';
+var marathonError = 'MARATHON_ERROR';
 
 var MarathonStore;
 
@@ -104,7 +104,7 @@ describe('StoreMixin', function () {
 
   describe('#store_addListeners', function () {
 
-    it('doesn"t create new listeners when they already exist', function () {
+    it('doesn\'t create new listeners when they already exist', function () {
       this.instance.store_listeners = ['marathon'];
       this.instance.componentDidMount();
       this.instance.store_addListeners();
@@ -116,7 +116,7 @@ describe('StoreMixin', function () {
 
   describe('#store_removeListeners', function () {
 
-    it('it won"t try to remove listeners that are not setup', function () {
+    it('it won\'t try to remove listeners that are not setup', function () {
       this.instance.store_listeners = [{
         name: 'marathon',
         events: ['success']
@@ -197,7 +197,7 @@ describe('StoreMixin', function () {
       expect(MarathonStore.removeChangeListener).toHaveBeenCalled();
     });
 
-    it('doesn"t remove listener when unmountWhen is falsy', function () {
+    it('doesn\'t remove listener when unmountWhen is falsy', function () {
       this.instance.store_listeners = [{
         name: 'marathon',
         unmountWhen: function () { return false; },
@@ -209,7 +209,7 @@ describe('StoreMixin', function () {
       expect(MarathonStore.removeChangeListener).not.toHaveBeenCalled();
     });
 
-    it('doesn"t remove listener when listenAlways is truthy', function () {
+    it('doesn\'t remove listener when listenAlways is truthy', function () {
       this.instance.store_listeners = [{
         name: 'marathon',
         unmountWhen: function () { return true; },
@@ -221,7 +221,7 @@ describe('StoreMixin', function () {
       expect(MarathonStore.removeChangeListener).not.toHaveBeenCalled();
     });
 
-    it('doesn"t remove listener when listenAlways is truthy', function () {
+    it('doesn\'t remove listener when listenAlways is truthy', function () {
       var onMarathonStoreSuccess = jasmine.createSpy('onMarathonStoreSuccess');
 
       this.instance.store_listeners = ['marathon'];

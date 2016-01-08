@@ -57,4 +57,50 @@ describe('Util', function () {
       }
     });
   });
+
+  describe('#isArrayLike', function () {
+    it('should be truthy when given an array', function () {
+      var array = [0, 1, 2, 3];
+      expect(Util.isArrayLike(array)).toBeTruthy();
+    });
+
+    it('should be falsy when given an integer', function () {
+      var integer = 3;
+      expect(Util.isArrayLike(integer)).toBeFalsy();
+    });
+  });
+
+  describe('#isLength', function () {
+    it('should be truthy when given a positive integer less than 9007199254740991', function () {
+      var integer = 500;
+      expect(Util.isLength(integer)).toBeTruthy();
+    });
+
+    it('should be falsy when given a negative integer', function () {
+      var integer = -3;
+      expect(Util.isLength(integer)).toBeFalsy();
+    });
+
+    it('should be falsy when given an integer greater than 9007199254740991', function () {
+      var integer = 9007199254740992;
+      expect(Util.isLength(integer)).toBeFalsy();
+    });
+  });
+
+  describe('#isObject', function () {
+    it('should be truthy when given an object', function () {
+      var object = {foo: 'bar'};
+      expect(Util.isObject(object)).toBeTruthy();
+    });
+
+    it('should be falsy when given a string', function () {
+      var object = 'foo';
+      expect(Util.isObject(object)).toBeFalsy();
+    });
+
+    it('should be falsy when given an integer', function () {
+      var integer = 500;
+      expect(Util.isObject(integer)).toBeFalsy();
+    });
+  });
 });

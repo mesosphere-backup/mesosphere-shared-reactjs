@@ -1,5 +1,5 @@
-var Util = require("./Util");
-var EventEmitter = require("events").EventEmitter;
+var Util = require('./Util');
+var EventEmitter = require('events').EventEmitter;
 
 function mixInto(target, source) {
   Object.keys(source).forEach(function (key) {
@@ -19,7 +19,7 @@ var Store = {
   createStore: function (store) {
     store = store || {};
     if (store.storeID == null) {
-      throw "All stores must have an id!";
+      throw 'All stores must have an id!';
     }
 
     var mixins = store.mixins || [];
