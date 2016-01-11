@@ -13,7 +13,7 @@ var ListenersDescription = {
   //     return true;
   //   },
   //   listenAlways: true,
-  //   suppressUpdate: true
+  //   suppressUpdate: false
   // }
 };
 
@@ -144,7 +144,7 @@ var StoreMixin = {
     }
 
     // forceUpdate if not suppressed by configuration
-    if (!listenerDetail.suppressUpdate) {
+    if (listenerDetail.suppressUpdate !== true) {
       this.forceUpdate();
     }
   },
