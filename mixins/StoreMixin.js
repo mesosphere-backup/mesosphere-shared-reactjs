@@ -12,9 +12,10 @@ var ListenersDescription = {
   //   unmountWhen: function () {
   //     return true;
   //   },
-  //   listenAlways: true
+  //   listenAlways: true,
+  //   suppressUpdate: true
   // }
-}
+};
 
 var StoreMixin = {
   componentDidMount: function () {
@@ -142,8 +143,10 @@ var StoreMixin = {
       this[onChangeFn].apply(this, args);
     }
 
-    // Always forceUpdate no matter where the change came from
-    this.forceUpdate();
+    // forceUpdate if not suppressed by configuration
+    if (!listenerDetail.suppressUpdate) {
+      this.forceUpdate();
+    }
   },
 
   store_getChangeFunctionName: function (storeID, event) {
