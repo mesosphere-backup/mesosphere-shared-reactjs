@@ -243,13 +243,27 @@ describe('StoreMixin', function () {
       expect(onMarathonStoreSuccess.calls[0].args).toEqual([1, 2, 3, 4]);
     });
 
-    it('calls #forceUpdate on store change', function () {
+    it('calls #forceUpdate on store change when not suppressed', function () {
       this.instance.store_listeners = ['marathon'];
       this.instance.componentDidMount();
       spyOn(this.instance, 'forceUpdate');
       this.instance.store_onStoreChange('marathon', 'success');
 
       expect(this.instance.forceUpdate).toHaveBeenCalled();
+    });
+
+    it('doesn\'t call #forceUpdate on change when suppressed', function () {
+      this.instance.store_listeners = [{
+        name: 'marathon',
+        unmountWhen: function () { return true; },
+        listenAlways: true,
+        suppressUpdate: true
+      }];
+      this.instance.componentDidMount();
+      spyOn(this.instance, 'forceUpdate');
+      this.instance.store_onStoreChange('marathon', 'success');
+
+      expect(this.instance.forceUpdate).not.toHaveBeenCalled();
     });
 
   });
