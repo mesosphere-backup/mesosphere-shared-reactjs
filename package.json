@@ -26,5 +26,8 @@
       "react",
       "reactjs-mixin"
     ]
+  },
+  "dependencies": {
+    "reqwest": "^2.0.5"
   }
 }
