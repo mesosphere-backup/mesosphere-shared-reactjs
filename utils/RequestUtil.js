@@ -1,5 +1,5 @@
-var _ = require("underscore");
 var Reqwest = require("./Reqwest");
+var Util = require("./Util");
 
 var activeRequests = {};
 
@@ -7,7 +7,7 @@ function createCallbackWrapper(callback, requestID) {
   return function () {
     setRequestState(requestID, false);
 
-    if (_.isFunction(callback)) {
+    if (Util.isFunction(callback)) {
       callback.apply(null, arguments);
     }
   };
@@ -25,7 +25,7 @@ function setRequestState(requestID, state) {
 var RequestUtil = {
   json: function (options) {
     if (options) {
-      if (_.isFunction(options.hangingRequestCallback)) {
+      if (Util.isFunction(options.hangingRequestCallback)) {
         var requestID = JSON.stringify(options);
         options.success = createCallbackWrapper(options.success, requestID);
         options.error = createCallbackWrapper(options.error, requestID);
@@ -50,7 +50,7 @@ var RequestUtil = {
       }
     }
 
-    options = _.extend({}, {
+    options = Util.extend({}, {
       contentType: "application/json; charset=utf-8",
       type: "json",
       timeout: 2000,
