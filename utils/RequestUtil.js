@@ -58,7 +58,7 @@ var RequestUtil = {
     }, options);
     /* eslint-disable consistent-return */
     return Reqwest.reqwest(options);
-    /* eslint-disable consistent-return */
+    /* eslint-enable consistent-return */
   }
 };
 
