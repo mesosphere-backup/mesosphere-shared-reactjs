@@ -56,6 +56,7 @@ var RequestUtil = {
       timeout: 2000,
       method: "GET"
     }, options);
+
     /* eslint-disable consistent-return */
     return Reqwest.reqwest(options);
     /* eslint-enable consistent-return */
