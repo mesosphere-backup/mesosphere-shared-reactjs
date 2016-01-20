@@ -60,6 +60,30 @@ var RequestUtil = {
     /* eslint-disable consistent-return */
     return Reqwest.reqwest(options);
     /* eslint-enable consistent-return */
+  },
+
+  parseResponseBody: function (xhr) {
+    // Handle html document returned with 404 gracefully,
+    // to not break functionality
+    if (typeof xhr.getResponseHeader === "function") {
+      var contentType = xhr.getResponseHeader("Content-Type");
+      if (contentType && contentType.indexOf("text/html") >= 0) {
+        return {};
+      }
+    }
+
+    var responseJSON = xhr.responseJSON;
+    var responseText = xhr.responseText;
+
+    if (responseJSON) {
+      return responseJSON;
+    }
+
+    if (responseText) {
+      return JSON.parse(responseText);
+    }
+
+    return {};
   }
 };
 
