@@ -84,4 +84,32 @@ describe("RequestUtil", function () {
     });
 
   });
+
+  describe("#parseResponseBody", function () {
+    it("should parse the object with responseText correctly", function () {
+      var originalObject = {name: "Kenny"};
+      var xhr = {
+        responseText: JSON.stringify(originalObject)
+      };
+
+      expect(RequestUtil.parseResponseBody(xhr)).toEqual(originalObject);
+    });
+
+    it("should parse the object with responseJSON correctly", function () {
+      var originalObject = {name: "Kenny"};
+      var xhr = {
+        responseJSON: originalObject
+      };
+
+      expect(RequestUtil.parseResponseBody(xhr)).toEqual(originalObject);
+    });
+
+    it("should return empty object if responseText/responseJSON doesnt exist",
+      function () {
+        var originalObject = {status: 200};
+        expect(RequestUtil.parseResponseBody(originalObject))
+          .toEqual({});
+      }
+    );
+  });
 });
