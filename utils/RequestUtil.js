@@ -43,10 +43,6 @@ var RequestUtil = {
         if (options.data) {
           options.data = JSON.stringify(options.data);
         }
-
-        if (!options.type) {
-          options.type = "text";
-        }
       }
     }
 
