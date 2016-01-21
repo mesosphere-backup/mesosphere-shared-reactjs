@@ -68,11 +68,6 @@ describe("RequestUtil", function () {
       expect(Reqwest.reqwest.calls[0].args[0].data).toEqual({hello: "world"});
     });
 
-    it("sets the correct datatype when doing a PUT request", function () {
-      RequestUtil.json({method: "PUT", data: {hello: "world"}});
-      expect(Reqwest.reqwest.calls[0].args[0].type).toEqual("text");
-    });
-
     it("does not set the datatype when doing a GET request", function () {
       RequestUtil.json({method: "GET", data: {hello: "world"}});
       expect(Reqwest.reqwest.calls[0].args[0].type).toEqual("json");
