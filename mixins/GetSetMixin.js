@@ -14,6 +14,14 @@ var GetSetMixin = {
     return this.getSet_data[key];
   },
 
+  getAll: function () {
+    if (typeof this.getSet_data === 'undefined') {
+      return null;
+    }
+
+    return this.getSet_data;
+  },
+
   set: function (data) {
     if (!Util.isObject(data) || Util.isArrayLike(data)) {
       throw new Error('Can only update getSet_data with data of type Object.');
