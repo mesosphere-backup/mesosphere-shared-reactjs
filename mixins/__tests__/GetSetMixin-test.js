@@ -42,6 +42,18 @@ describe('GetSetMixin', function () {
 
   });
 
+  describe('#getAll', function () {
+
+    it('should return all data', function () {
+      this.instance.set({
+        foo: 'bar',
+        baz: 'baaz'
+      });
+      expect(this.instance.getAll()).toEqual({foo: 'bar', baz: 'baaz'});
+    });
+
+  });
+
   describe('#set', function () {
 
     it('throws an error when called with a non-object', function () {
