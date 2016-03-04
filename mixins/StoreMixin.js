@@ -27,11 +27,19 @@ var StoreMixin = {
       // the ListenersDescription definition above
       this.store_listeners.forEach(function (listener) {
         if (typeof listener === 'string') {
+          if (!ListenersDescription[listener]) {
+            return;
+          }
+
           // Use all defaults
           storesListeners[listener] = Util.clone(ListenersDescription[listener]);
         } else {
           var storeName = listener.name;
           var events = listener.events;
+
+          if (!ListenersDescription[storeName]) {
+            return;
+          }
 
           // Populate events by key. For example, a component
           // may only want to listen for 'success' events
