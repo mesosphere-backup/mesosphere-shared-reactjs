@@ -18,7 +18,7 @@ var ListenersDescription = {
 };
 
 var StoreMixin = {
-  store_setListeners: function (storeListeners) {
+  store_initializeListeners: function (storeListeners) {
     // Create a map of listeners, becomes useful later
     var storesListeners = {};
 
@@ -55,7 +55,7 @@ var StoreMixin = {
   // Auto set listeners on react components
   componentDidMount: function () {
     if (this.store_listeners) {
-      this.store_setListeners(this.store_listeners);
+      this.store_initializeListeners(this.store_listeners);
     }
   },
   // Auto clear listeners on react components
