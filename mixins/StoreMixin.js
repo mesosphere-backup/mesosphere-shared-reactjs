@@ -52,9 +52,6 @@ var StoreMixin = {
     this.store_addListeners();
   },
 
-  store_clearListeners: function () {
-    this.store_removeListeners();
-  },
   // Auto set listeners on react components
   componentDidMount: function () {
     if (this.store_listeners) {
@@ -63,7 +60,7 @@ var StoreMixin = {
   },
   // Auto clear listeners on react components
   componentWillUnmount: function () {
-    this.store_clearListeners();
+    this.store_removeListeners();
   },
 
   store_configure: function (stores) {
