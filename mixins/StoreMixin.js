@@ -18,50 +18,47 @@ var ListenersDescription = {
 };
 
 var StoreMixin = {
-  componentDidMount: function () {
-    if (this.store_listeners) {
-      // Create a map of listeners, becomes useful later
-      var storesListeners = {};
+  store_initializeListeners: function (storeListeners) {
+    // Create a map of listeners, becomes useful later
+    var storesListeners = {};
 
-      // Merges options for each store listener with
-      // the ListenersDescription definition above
-      this.store_listeners.forEach(function (listener) {
-        if (typeof listener === 'string') {
-          if (!ListenersDescription[listener]) {
-            return;
-          }
+    // Merges options for each store listener with
+    // the ListenersDescription definition above
+    storeListeners.forEach(function (listener) {
+      if (typeof listener === 'string') {
+        // Use all defaults
+        storesListeners[listener] = Util.clone(ListenersDescription[listener]);
+      } else {
+        var storeName = listener.name;
+        var events = listener.events;
 
-          // Use all defaults
-          storesListeners[listener] = Util.clone(ListenersDescription[listener]);
-        } else {
-          var storeName = listener.name;
-          var events = listener.events;
-
-          if (!ListenersDescription[storeName]) {
-            return;
-          }
-
-          // Populate events by key. For example, a component
-          // may only want to listen for 'success' events
-          if (events) {
-            listener.events = {};
-            events.forEach(function (event) {
-              listener.events[event] =
-                ListenersDescription[storeName].events[event];
-            });
-          }
-
-          storesListeners[storeName] = Util.extend(
-            {}, ListenersDescription[storeName], listener
-          );
+        // Populate events by key. For example, a component
+        // may only want to listen for 'success' events
+        if (events) {
+          listener.events = {};
+          events.forEach(function (event) {
+            listener.events[event] =
+              ListenersDescription[storeName].events[event];
+          });
         }
-      });
 
-      this.store_listeners = storesListeners;
-      this.store_addListeners();
-    }
+        storesListeners[storeName] = Util.extend(
+          {}, ListenersDescription[storeName], listener
+        );
+      }
+    });
+
+    this.store_listeners = storesListeners;
+    this.store_addListeners();
   },
 
+  // Auto set listeners on react components
+  componentDidMount: function () {
+    if (this.store_listeners) {
+      this.store_initializeListeners(this.store_listeners);
+    }
+  },
+  // Auto clear listeners on react components
   componentWillUnmount: function () {
     this.store_removeListeners();
   },
@@ -152,7 +149,7 @@ var StoreMixin = {
     }
 
     // forceUpdate if not suppressed by configuration
-    if (listenerDetail.suppressUpdate !== true) {
+    if (listenerDetail.suppressUpdate !== true && typeof this.forceUpdate === 'function') {
       this.forceUpdate();
     }
   },
