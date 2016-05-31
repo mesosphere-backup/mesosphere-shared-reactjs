@@ -147,7 +147,8 @@ var StoreMixin = {
 
     // Call callback on component that implements mixin if it exists
     var onChangeFn = this.store_getChangeFunctionName(
-      listenerDetail.store.storeID, event
+      listenerDetail.storeID || listenerDetail.store.storeID,
+      event
     );
 
     if (this[onChangeFn]) {
