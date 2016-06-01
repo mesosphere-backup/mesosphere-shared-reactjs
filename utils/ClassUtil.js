@@ -21,8 +21,6 @@ function mixin() {
 
   // Creates base class
   function Base() {}
-  Base.prototype = Object.create(React.Component.prototype);
-  Base.prototype.constructor = Base;
 
   mixins.reverse();
 
