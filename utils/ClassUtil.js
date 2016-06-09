@@ -55,5 +55,5 @@ function mixin(Parent /*, ...mixins*/) {
 }
 
 module.exports = {
-  mixin
+  mixin: mixin
 };
