@@ -77,15 +77,14 @@ var StoreMixin = {
     Object.keys(this.store_listeners).forEach(function (storeID) {
       var listenerDetail = this.store_listeners[storeID];
       var events = listenerDetail.events;
-      var eventKeys = Object.keys(events);
 
       // Check that we actually have events to fire events on
-      if (!events || !eventKeys.length) {
+      if (typeof events !== 'object' || !Object.keys(events).length) {
         throw new Error('No events found on listener configuration for store ' +
           'with ID "' + storeID + '".');
       }
       // Loop through all available events
-      eventKeys.forEach(function (event) {
+      Object.keys(events).forEach(function (event) {
         var eventListenerID = event + LISTENER_SUFFIX;
 
         // Check to see if we are already listening for this event
