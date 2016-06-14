@@ -54,6 +54,8 @@ var StoreMixin = {
       }
     });
 
+    // TODO: this.store_listeners gets changed from an array to an object here.
+    // We shouldn't modify the structure
     this.store_listeners = storesListeners;
     this.store_addListeners();
   },
