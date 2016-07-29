@@ -81,7 +81,8 @@ var StoreMixin = {
       var events = listenerDetail.events;
 
       // Check that we actually have events to fire events on
-      if (typeof events !== 'object' || !Object.keys(events).length) {
+      if (process.env.NODE_ENV !== 'production' &&
+        (typeof events !== 'object' || !Object.keys(events).length)) {
         throw new Error('No events found on listener configuration for store ' +
           'with ID "' + storeID + '".');
       }
