@@ -54,6 +54,8 @@ var StoreMixin = {
       }
     });
 
+    // TODO: this.store_listeners gets changed from an array to an object here.
+    // We shouldn't modify the structure
     this.store_listeners = storesListeners;
     this.store_addListeners();
   },
@@ -76,9 +78,16 @@ var StoreMixin = {
   store_addListeners: function () {
     Object.keys(this.store_listeners).forEach(function (storeID) {
       var listenerDetail = this.store_listeners[storeID];
+      var events = listenerDetail.events;
 
+      // Check that we actually have events to fire events on
+      if (process.env.NODE_ENV !== 'production' &&
+        (typeof events !== 'object' || !Object.keys(events).length)) {
+        throw new Error('No events found on listener configuration for store ' +
+          'with ID "' + storeID + '".');
+      }
       // Loop through all available events
-      Object.keys(listenerDetail.events).forEach(function (event) {
+      Object.keys(events).forEach(function (event) {
         var eventListenerID = event + LISTENER_SUFFIX;
 
         // Check to see if we are already listening for this event
@@ -93,7 +102,7 @@ var StoreMixin = {
 
         // Set up listener with store
         listenerDetail.store.addChangeListener(
-          listenerDetail.events[event], listenerDetail[eventListenerID]
+          events[event], listenerDetail[eventListenerID]
         );
       }.bind(this));
     }.bind(this));
@@ -146,10 +155,7 @@ var StoreMixin = {
     }
 
     // Call callback on component that implements mixin if it exists
-    var onChangeFn = this.store_getChangeFunctionName(
-      listenerDetail.storeID || listenerDetail.store.storeID,
-      event
-    );
+    var onChangeFn = this.store_getChangeFunctionName(storeID, event);
 
     if (this[onChangeFn]) {
       this[onChangeFn].apply(this, args);
