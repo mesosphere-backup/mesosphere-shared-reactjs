@@ -71,13 +71,10 @@ var RequestUtil = {
   },
 
   json: function (options) {
+    var usingHangingRequest = Util.isFunction(options.hangingRequestCallback);
     if (options) {
-      if (options.url && !/\?/.test(options.url)) {
-        options.url += "?_timestamp=" + Date.now();
-      }
-
-      if (Util.isFunction(options.hangingRequestCallback)) {
-        var requestID = JSON.stringify(options);
+      if (usingHangingRequest) {
+        var requestID = options.url;
         options.success = createCallbackWrapper(options.success, requestID);
         options.error = createCallbackWrapper(options.error, requestID);
 
@@ -95,12 +92,24 @@ var RequestUtil = {
           options.data = JSON.stringify(options.data);
         }
       }
+
+      // Add timestamp after requestID have been created to not make them unique
+      // for each new request
+      if (options.url && !/\?/.test(options.url)) {
+        options.url += "?_timestamp=" + Date.now();
+      }
+    }
+
+    // Only add timeout if it is not using hanging request
+    var timeout;
+    if (!usingHangingRequest) {
+      timeout = 2000;
     }
 
     options = Util.extend({}, {
       contentType: "application/json; charset=utf-8",
       type: "json",
-      timeout: 2000,
+      timeout,
       method: "GET"
     }, options);
 
