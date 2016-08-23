@@ -15,7 +15,7 @@ var Util = {
     }
     var copy = {};
     for (var attr in object) {
-      if (object.hasOwnProperty(attr)) {
+      if (Object.prototype.hasOwnProperty.call(object, attr)) {
         copy[attr] = object[attr];
       }
     }
