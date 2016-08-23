@@ -71,36 +71,46 @@ var RequestUtil = {
   },
 
   json: function (options) {
-    if (options) {
-      if (options.url && !/\?/.test(options.url)) {
-        options.url += "?_timestamp=" + Date.now();
-      }
+    // Default assign options to empty object
+    options || (options = {});
 
-      if (Util.isFunction(options.hangingRequestCallback)) {
-        var requestID = JSON.stringify(options);
-        options.success = createCallbackWrapper(options.success, requestID);
-        options.error = createCallbackWrapper(options.error, requestID);
+    var usingHangingRequest = Util.isFunction(options.hangingRequestCallback);
+    if (usingHangingRequest) {
+      var requestID = options.url;
+      options.success = createCallbackWrapper(options.success, requestID);
+      options.error = createCallbackWrapper(options.error, requestID);
 
-        if (isRequestActive(requestID)) {
-          options.hangingRequestCallback();
-          return;
-        } else {
-          setRequestState(requestID, true);
-          delete options.hangingRequestCallback;
-        }
+      if (isRequestActive(requestID)) {
+        options.hangingRequestCallback();
+        return;
+      } else {
+        setRequestState(requestID, true);
+        delete options.hangingRequestCallback;
       }
+    }
 
-      if (options.method && options.method !== "GET" && !options.contentType) {
-        if (options.data) {
-          options.data = JSON.stringify(options.data);
-        }
+    if (options.method && options.method !== "GET" && !options.contentType) {
+      if (options.data) {
+        options.data = JSON.stringify(options.data);
       }
+    }
+
+    // Add timestamp after requestID have been created to not make them unique
+    // for each new request
+    if (options.url && !/\?/.test(options.url)) {
+      options.url += "?_timestamp=" + Date.now();
+    }
+
+    // Only add timeout if it is not using hanging request
+    var timeout;
+    if (!usingHangingRequest) {
+      timeout = 2000;
     }
 
     options = Util.extend({}, {
       contentType: "application/json; charset=utf-8",
       type: "json",
-      timeout: 2000,
+      timeout,
       method: "GET"
     }, options);
 
