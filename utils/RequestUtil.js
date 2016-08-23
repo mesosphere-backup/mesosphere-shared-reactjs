@@ -71,33 +71,34 @@ var RequestUtil = {
   },
 
   json: function (options) {
+    // Default assign options to empty object
+    options || (options = {});
+
     var usingHangingRequest = Util.isFunction(options.hangingRequestCallback);
-    if (options) {
-      if (usingHangingRequest) {
-        var requestID = options.url;
-        options.success = createCallbackWrapper(options.success, requestID);
-        options.error = createCallbackWrapper(options.error, requestID);
+    if (usingHangingRequest) {
+      var requestID = options.url;
+      options.success = createCallbackWrapper(options.success, requestID);
+      options.error = createCallbackWrapper(options.error, requestID);
 
-        if (isRequestActive(requestID)) {
-          options.hangingRequestCallback();
-          return;
-        } else {
-          setRequestState(requestID, true);
-          delete options.hangingRequestCallback;
-        }
+      if (isRequestActive(requestID)) {
+        options.hangingRequestCallback();
+        return;
+      } else {
+        setRequestState(requestID, true);
+        delete options.hangingRequestCallback;
       }
+    }
 
-      if (options.method && options.method !== "GET" && !options.contentType) {
-        if (options.data) {
-          options.data = JSON.stringify(options.data);
-        }
+    if (options.method && options.method !== "GET" && !options.contentType) {
+      if (options.data) {
+        options.data = JSON.stringify(options.data);
       }
+    }
 
-      // Add timestamp after requestID have been created to not make them unique
-      // for each new request
-      if (options.url && !/\?/.test(options.url)) {
-        options.url += "?_timestamp=" + Date.now();
-      }
+    // Add timestamp after requestID have been created to not make them unique
+    // for each new request
+    if (options.url && !/\?/.test(options.url)) {
+      options.url += "?_timestamp=" + Date.now();
     }
 
     // Only add timeout if it is not using hanging request
