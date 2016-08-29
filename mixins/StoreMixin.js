@@ -54,6 +54,14 @@ var StoreMixin = {
       }
     });
 
+    // Default unmountWhen to unmount immediately when suppressUpdate is not
+    // explicity set
+    if (this.unmountWhen == null && typeof(this.suppressUpdate) === 'undefined') {
+      this.unmountWhen = function () {
+        return true;
+      }
+    }
+
     // TODO: this.store_listeners gets changed from an array to an object here.
     // We shouldn't modify the structure
     this.store_listeners = storesListeners;
@@ -163,6 +171,13 @@ var StoreMixin = {
 
     // forceUpdate if not suppressed by configuration
     if (listenerDetail.suppressUpdate !== true && typeof this.forceUpdate === 'function') {
+      if (process.env.NODE_ENV !== 'production') {
+        var warning = 'Forced upates are an antipattern. ';
+        if (this.saveState_key != null) {
+          warning += 'Check the render method of ' + this.saveState_key + '.';
+        }
+        console.warn(warning);
+      }
       this.forceUpdate();
     }
   },
