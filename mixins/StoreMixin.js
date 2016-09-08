@@ -54,6 +54,14 @@ var StoreMixin = {
       }
     });
 
+    // Default unmountWhen to unmount immediately when suppressUpdate is not
+    // explicity set
+    if (this.unmountWhen == null && typeof(this.suppressUpdate) === 'undefined') {
+      this.unmountWhen = function () {
+        return true;
+      }
+    }
+
     // TODO: this.store_listeners gets changed from an array to an object here.
     // We shouldn't modify the structure
     this.store_listeners = storesListeners;
