@@ -110,7 +110,7 @@ var RequestUtil = {
     options = Util.extend({}, {
       contentType: "application/json; charset=utf-8",
       type: "json",
-      timeout,
+      timeout: timeout,
       method: "GET"
     }, options);
 
