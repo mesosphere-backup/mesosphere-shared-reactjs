@@ -5,6 +5,24 @@ var DEFAULT_ERROR_MESSAGE = "An error has occurred.";
 
 var activeRequests = {};
 
+function createRequestID(request) {
+  var contentType = request.contentType || '';
+  var data = '';
+  var headers = '';
+  var method = request.method || '';
+  var url = request.url || '';
+
+  if (request.data != null) {
+    data = JSON.stringify(request.data);
+  }
+
+  if (request.headers != null) {
+    headers = JSON.stringify(request.headers);
+  }
+
+  return method + ':' + url + ':' + data + ':' + contentType + ':' + headers;
+}
+
 function createCallbackWrapper(callback, requestID) {
   return function () {
     setRequestState(requestID, false);
@@ -73,20 +91,23 @@ var RequestUtil = {
   json: function (options) {
     // Default assign options to empty object
     options || (options = {});
+    var requestID = createRequestID(options);
 
-    var usingHangingRequest = Util.isFunction(options.hangingRequestCallback);
-    if (usingHangingRequest) {
-      var requestID = options.url;
-      options.success = createCallbackWrapper(options.success, requestID);
-      options.error = createCallbackWrapper(options.error, requestID);
+    // The proxied success and error methods mark the request as inactive when
+    // the request resolves.
+    options.success = createCallbackWrapper(options.success, requestID);
+    options.error = createCallbackWrapper(options.error, requestID);
 
-      if (isRequestActive(requestID)) {
+    // If request is currently active, we don't make another request.
+    if (isRequestActive(requestID)) {
+      if (Util.isFunction(options.hangingRequestCallback)) {
         options.hangingRequestCallback();
-        return;
-      } else {
-        setRequestState(requestID, true);
-        delete options.hangingRequestCallback;
       }
+
+      return;
+    } else {
+      setRequestState(requestID, true);
+      delete options.hangingRequestCallback;
     }
 
     if (options.method && options.method !== "GET" && !options.contentType) {
@@ -101,16 +122,9 @@ var RequestUtil = {
       options.url += "?_timestamp=" + Date.now();
     }
 
-    // Only add timeout if it is not using hanging request
-    var timeout;
-    if (!usingHangingRequest) {
-      timeout = 2000;
-    }
-
     options = Util.extend({}, {
       contentType: "application/json; charset=utf-8",
       type: "json",
-      timeout: timeout,
       method: "GET"
     }, options);
 
