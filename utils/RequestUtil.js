@@ -5,6 +5,24 @@ var DEFAULT_ERROR_MESSAGE = "An error has occurred.";
 
 var activeRequests = {};
 
+function createRequestID(request) {
+  var contentType = request.contentType || '';
+  var data = '';
+  var headers = '';
+  var method = request.method || '';
+  var url = request.url || '';
+
+  if (request.data != null) {
+    data = JSON.stringify(request.data);
+  }
+
+  if (request.headers != null) {
+    headers = JSON.stringify(request.headers);
+  }
+
+  return method + ':' + url + ':' + data + ':' + contentType + ':' + headers;
+}
+
 function createCallbackWrapper(callback, requestID) {
   return function () {
     setRequestState(requestID, false);
@@ -73,7 +91,7 @@ var RequestUtil = {
   json: function (options) {
     // Default assign options to empty object
     options || (options = {});
-    var requestID = options.url;
+    var requestID = createRequestID(options);
 
     // The proxied success and error methods mark the request as inactive when
     // the request resolves.
