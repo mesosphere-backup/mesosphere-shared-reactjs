@@ -1,6 +1,6 @@
 {
   "name": "mesosphere-shared-reactjs",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "Shared code from mesosphere web projects",
   "main": "index.js",
   "scripts": {
