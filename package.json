@@ -28,6 +28,7 @@
     ]
   },
   "dependencies": {
-    "reqwest": "^2.0.5"
+    "reqwest": "^2.0.5",
+    "whatwg-fetch": "^2.0.3"
   }
 }
