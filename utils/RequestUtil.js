@@ -1,4 +1,4 @@
-var Reqwest = require("./Reqwest");
+require('whatwg-fetch');
 var Util = require("./Util");
 
 var DEFAULT_ERROR_MESSAGE = "An error has occurred.";
@@ -40,6 +40,35 @@ function isRequestActive(requestID) {
 
 function setRequestState(requestID, state) {
   activeRequests[requestID] = state;
+}
+
+/**
+ * Check if the server returns
+ * valid status then continue
+ * down the chain
+ *
+ * @param {Object} response
+ * @returns
+ */
+function checkStatus(response) {
+  if (response.status >= 200 && response.status < 300) {
+    return response
+  } else {
+    var error = new Error(response.statusText)
+    error.response = response
+    throw error
+  }
+}
+
+/**
+ * Parse response to json before
+ * passing the data down the chain
+ *
+ * @param {Object} response
+ * @returns {any} json data
+ */
+function parseJSON(response) {
+  return response.json()
 }
 
 var RequestUtil = {
@@ -124,13 +153,21 @@ var RequestUtil = {
 
     options = Util.extend({}, {
       contentType: "application/json; charset=utf-8",
-      type: "json",
       method: "GET"
     }, options);
 
-    /* eslint-disable consistent-return */
-    return Reqwest.reqwest(options);
-    /* eslint-enable consistent-return */
+    return fetch(options.url, {
+      method: options.method,
+      body: options.data,
+      credentials: 'include',
+      headers: {
+        'Content-Type': options.contentType
+      }
+    })
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(options.success)
+    .catch(options.error)
   },
 
   parseResponseBody: function (xhr) {
