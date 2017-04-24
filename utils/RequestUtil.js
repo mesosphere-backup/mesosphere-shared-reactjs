@@ -161,6 +161,7 @@ var RequestUtil = {
       body: options.data,
       credentials: 'include',
       headers: {
+        'Authorization': `token=${global.localStorage.getItem('token')}`,
         'Content-Type': options.contentType
       }
     })
