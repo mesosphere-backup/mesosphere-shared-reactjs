@@ -118,11 +118,6 @@ var RequestUtil = {
   },
 
   json: function (options) {
-    // default headers
-    var headers = {
-      'Authorization': 'token=' + global.localStorage.getItem('token'),
-      'Content-Type': options.contentType
-    };
     // Default assign options to empty object
     options || (options = {});
     var requestID = createRequestID(options);
@@ -156,16 +151,21 @@ var RequestUtil = {
       options.url += "?_timestamp=" + Date.now();
     }
 
+    options = Util.extend({}, {
+      contentType: "application/json; charset=utf-8",
+      method: "GET"
+    }, options);
+
+    var headers = {
+      'Authorization': 'token=' + global.localStorage.getItem('token'),
+      'Content-Type': options.contentType
+    };
+
     // Remove Authorization header when not necessary
     // because the backend checks for it and takes another logic
     if ( options.url.includes('auth/login') ) {
       delete headers.Authorization
     }
-
-    options = Util.extend({}, {
-      contentType: "application/json; charset=utf-8",
-      method: "GET"
-    }, options);
 
     return fetch(options.url, {
       method: options.method,
