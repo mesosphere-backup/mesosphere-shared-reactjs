@@ -120,7 +120,7 @@ var RequestUtil = {
   json: function (options) {
     // default headers
     var headers = {
-      'uthorization': 'token=' + global.localStorage.getItem('token'),
+      'Authorization': 'token=' + global.localStorage.getItem('token'),
       'Content-Type': options.contentType
     };
     // Default assign options to empty object
