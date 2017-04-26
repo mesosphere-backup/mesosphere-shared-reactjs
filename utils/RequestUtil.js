@@ -119,8 +119,8 @@ var RequestUtil = {
 
   json: function (options) {
     // default headers
-    let headers = {
-      'Authorization': 'token=' + global.localStorage.getItem('token'),
+    var headers = {
+      'uthorization': 'token=' + global.localStorage.getItem('token'),
       'Content-Type': options.contentType
     };
     // Default assign options to empty object
@@ -170,7 +170,7 @@ var RequestUtil = {
     return fetch(options.url, {
       method: options.method,
       body: options.data,
-      credentials: 'include',
+      credentials: 'omit',
       headers: headers
     })
     .then(checkStatus)
